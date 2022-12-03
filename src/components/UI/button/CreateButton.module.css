@@ -1,0 +1,8 @@
+.createBtn {
+    padding: 5px 15px;
+    color: blueviolet;
+    font-size: 14px;
+    background: honeydew;
+    border: 2px solid blueviolet;
+    cursor: pointer;
+}
