@@ -16,14 +16,13 @@ function App() {
         {id: 2, title: 'Java', description: 'Describe'},
     ]);
 
+
     const addPost = (newPost) => {
         setPosts([...posts, newPost]);
     }
 
-
-
     const modifyPost = (id, str) => {
-        const newPosts = posts.map((p) => {
+        const newPosts = posts.map(p => {
             if (p.id === id) {
                 return {...p, description: str};
             }
@@ -32,18 +31,16 @@ function App() {
         setPosts(newPosts);
     }
 
-    // const deletePost = (postId) => {
-    //   const newPosts = posts.filter(({id}) => {
-    //       if (postId !== id) {
-    //
-    //       }
-    //   })
-    // }
+    const deletePost = (post) => {
+      setPosts(posts.filter(p =>
+          p.id !== post.id
+      ))
+    }
 
     return (
         <div className='App'>
             <PostForm add={addPost} />
-            <PostList posts={posts} modifyPost={modifyPost} title={'Posts list JS'}/>
+            <PostList posts={posts} modify={modifyPost} remove={deletePost} title={'Posts list JS'}/>
         </div>
     );
 }
