@@ -6,47 +6,44 @@ import PostItem from "./components/PostItem";
 import PostList from "./components/PostList";
 import CreateButton from "./components/UI/button/CreateButton";
 import MyInput from "./components/UI/input/MyInput";
+import PostForm from "./components/PostForm";
 
 
 function App() {
 
-    const [posts, setPost] = useState([
+    const [posts, setPosts] = useState([
         {id: 1, title: 'Javascript ', description: 'Describe'},
-        {id: 2, title: 'Javascript 2', description: 'Describe'},
+        {id: 2, title: 'Java', description: 'Describe'},
     ]);
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const addPost = (newPost) => {
+        setPosts([...posts, newPost]);
+    }
 
-    const addNewPost = (event) => {
-        event.preventDefault()
-        const newPost = {
-            id: Date.now(),
-            title,
-            description
-        }
-        setPost([...posts, newPost])
-    };
+
+
+    const modifyPost = (id, str) => {
+        const newPosts = posts.map((p) => {
+            if (p.id === id) {
+                return {...p, description: str};
+            }
+            return p;
+        })
+        setPosts(newPosts);
+    }
+
+    // const deletePost = (postId) => {
+    //   const newPosts = posts.filter(({id}) => {
+    //       if (postId !== id) {
+    //
+    //       }
+    //   })
+    // }
 
     return (
         <div className='App'>
-            <form>
-                <MyInput
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                    type='text'
-                    placeholder='Header of post'
-                />
-
-                <MyInput
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                    type='text'
-                    placeholder='Description of post'
-                />
-                <CreateButton onClick={addNewPost}>Create post</CreateButton>
-            </form>
-            <PostList posts={posts} title={'Posts list JS'}/>
+            <PostForm add={addPost} />
+            <PostList posts={posts} modifyPost={modifyPost} title={'Posts list JS'}/>
         </div>
     );
 }

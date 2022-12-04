@@ -1,4 +1,5 @@
 import React from "react";
+import CreateButton from "./UI/button/CreateButton";
 
 const PostItem = function (props) {
     return (
@@ -8,7 +9,8 @@ const PostItem = function (props) {
                 <div>{props.post.description}</div>
             </div>
             <div className='post__btns'>
-                <button>Delete</button>
+                <CreateButton>Delete</CreateButton>
+                <CreateButton onClick={() => props.modifyPost(props.id)}>Modify</CreateButton>
             </div>
         </div>
     )
