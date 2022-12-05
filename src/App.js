@@ -7,6 +7,7 @@ import PostList from "./components/PostList";
 import CreateButton from "./components/UI/button/CreateButton";
 import MyInput from "./components/UI/input/MyInput";
 import PostForm from "./components/PostForm";
+import PostSortingSelector from "./components/UI/postSortingSelector/postSortingSelector";
 
 
 function App() {
@@ -16,6 +17,12 @@ function App() {
         {id: 2, title: 'Java', description: 'Describe'},
     ]);
 
+    const [selectedSort, setSelectedSort] = useState('');
+
+    const setSort = sort => {
+        setSelectedSort(sort)
+        setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
+    }
 
     const addPost = (newPost) => {
         setPosts([...posts, newPost]);
@@ -40,7 +47,29 @@ function App() {
     return (
         <div className='App'>
             <PostForm add={addPost} />
-            <PostList posts={posts} modify={modifyPost} remove={deletePost} title={'Posts list JS'}/>
+            <hr style={{margin: '15px 0px'}} />
+            <PostSortingSelector
+                value={selectedSort}
+                onChange={setSort}
+                defaultValue='Sort by'
+                options={[
+                    {
+                        value: 'title',
+                        name: 'By name'
+                    },
+                    {
+                        value: 'description',
+                        name: 'By description'
+                    }
+                ]}/>
+            {posts.length
+                ?
+                <PostList posts={posts} modify={modifyPost} remove={deletePost} title={'Posts list:'}/>
+                :
+                <h1 style={{textAlign: 'center'}}>
+                    No posts.
+                </h1>
+            }
         </div>
     );
 }
