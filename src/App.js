@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import './styles/App.css'
@@ -14,14 +14,26 @@ function App() {
 
     const [posts, setPosts] = useState([
         {id: 1, title: 'Javascript ', description: 'Describe'},
-        {id: 2, title: 'Java', description: 'Describe'},
+        {id: 2, title: 'Java', description: 'Description'},
     ]);
-
+    const [postSearchQuery, setPostSearchQuery] = useState('');
     const [selectedSort, setSelectedSort] = useState('');
+
+
+    const sortedPosts = useMemo(() => {
+        console.log('getSortedPosts func started')
+        if (selectedSort) {
+            return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]));
+        }
+        return posts;
+    }, [selectedSort, posts]);
+    const sortedAndSearchedPosts = useMemo(() => {
+        return sortedPosts.filter((post) => post.title.toLowerCase().includes(postSearchQuery.toLowerCase()))
+    }, [postSearchQuery, sortedPosts])
+
 
     const setSort = sort => {
         setSelectedSort(sort)
-        setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
     }
 
     const addPost = (newPost) => {
@@ -44,10 +56,16 @@ function App() {
       ))
     }
 
+
     return (
         <div className='App'>
             <PostForm add={addPost} />
             <hr style={{margin: '15px 0px'}} />
+            <MyInput
+                value={postSearchQuery}
+                onChange={e => setPostSearchQuery(e.target.value)}
+                placeholder={'Search'}
+            />
             <PostSortingSelector
                 value={selectedSort}
                 onChange={setSort}
@@ -60,11 +78,11 @@ function App() {
                     {
                         value: 'description',
                         name: 'By description'
-                    }
-                ]}/>
-            {posts.length
+                    }]}
+            />
+            {sortedAndSearchedPosts.length
                 ?
-                <PostList posts={posts} modify={modifyPost} remove={deletePost} title={'Posts list:'}/>
+                <PostList posts={sortedAndSearchedPosts} modify={modifyPost} remove={deletePost} title={'Posts list:'}/>
                 :
                 <h1 style={{textAlign: 'center'}}>
                     No posts.
@@ -73,5 +91,6 @@ function App() {
         </div>
     );
 }
+
 
 export default App;
