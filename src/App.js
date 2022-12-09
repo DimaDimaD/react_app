@@ -9,6 +9,7 @@ import MyInput from "./components/UI/input/MyInput";
 import PostForm from "./components/PostForm";
 import PostSortingSelector from "./components/UI/postSortingSelector/postSortingSelector";
 import PostFilter from "./components/PostFilter";
+import CreateModal from "./components/UI/CreateModal/CreateModal";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         {id: 2, title: 'Java', description: 'Description'},
     ]);
     const [filter, setFilter] = useState({sort: '', query: ''});
+    const [modal, setModal] = useState(false);
 
 
     const sortedPosts = useMemo(() => {
@@ -55,13 +57,24 @@ function App() {
 
     return (
         <div className='App'>
-            <PostForm add={addPost} />
+            <CreateButton
+                style={{marginTop: 30}}
+                onClick={() => setModal(true)}
+            >
+                New post
+            </CreateButton>
+           <CreateModal
+               visible={modal}
+               setVisible={setModal}
+           >
+               <PostForm add={addPost} />
+           </CreateModal>
             <hr style={{margin: '15px 0px'}} />
             <PostFilter
                 filter={filter}
                 setFilter={setFilter}
             />
-                <PostList posts={sortedAndSearchedPosts} modify={modifyPost} remove={deletePost} title={'Posts list:'}/>
+            <PostList posts={sortedAndSearchedPosts} modify={modifyPost} remove={deletePost} title={'Posts list:'}/>
         </div>
     );
 }
