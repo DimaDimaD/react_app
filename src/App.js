@@ -10,6 +10,7 @@ import PostForm from "./components/PostForm";
 import PostSortingSelector from "./components/UI/postSortingSelector/postSortingSelector";
 import PostFilter from "./components/PostFilter";
 import CreateModal from "./components/UI/CreateModal/CreateModal";
+import {TransitionGroup} from "react-transition-group";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
 
     const addPost = (newPost) => {
         setPosts([...posts, newPost]);
+        setModal(false);
     }
 
     const modifyPost = (id, str) => {
@@ -74,7 +76,7 @@ function App() {
                 filter={filter}
                 setFilter={setFilter}
             />
-            <PostList posts={sortedAndSearchedPosts} modify={modifyPost} remove={deletePost} title={'Posts list:'}/>
+                <PostList posts={sortedAndSearchedPosts} modify={modifyPost} remove={deletePost} title={'Posts list:'}/>
         </div>
     );
 }
