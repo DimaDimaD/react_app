@@ -12,6 +12,7 @@ import PostFilter from "./components/PostFilter";
 import CreateModal from "./components/UI/CreateModal/CreateModal";
 import {TransitionGroup} from "react-transition-group";
 import {usePosts} from "./hooks/usePosts";
+import axios from "axios";
 
 
 function App() {
@@ -44,9 +45,25 @@ function App() {
       ))
     }
 
+    const fetchPosts = async () => {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+
+        const posts = [];
+
+        for (let obj of response.data) {
+            let post = {};
+            post.title = obj.title
+            post.description = obj.body
+            posts.push(post)
+        }
+
+        setPosts(posts);
+    }
+
 
     return (
         <div className='App'>
+            <CreateButton onClick={fetchPosts}>Fetch</CreateButton>
             <CreateButton
                 style={{marginTop: 30}}
                 onClick={() => setModal(true)}
