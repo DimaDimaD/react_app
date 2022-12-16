@@ -6,11 +6,11 @@ const PostItem = function ({modify, remove, ...props}) {
         <div className='post'>
             <div className='post__content'>
                 <strong>{props.number}. {props.post.title}</strong>
-                <div>{props.post.description}</div>
+                <div>{props.post.body}</div>
             </div>
             <div className='post__btns'>
                 <CreateButton onClick={() => remove(props.post)}>Delete</CreateButton>
-                <CreateButton disabled onClick={() => modify(props.id)}>Modify</CreateButton>
+                {/*<CreateButton disabled onClick={() => modify(props.id)}>Modify</CreateButton>*/}
             </div>
         </div>
     )

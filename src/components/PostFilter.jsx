@@ -20,7 +20,7 @@ const PostFilter = ({filter, setFilter}) => {
                         name: 'By name'
                     },
                     {
-                        value: 'description',
+                        value: 'body',
                         name: 'By description'
                     }]}
             />

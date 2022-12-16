@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import './styles/App.css'
@@ -24,20 +24,22 @@ function App() {
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
 
+    useEffect(() => { fetchPosts() }, []);
+
     const addPost = (newPost) => {
         setPosts([...posts, newPost]);
         setModal(false);
     }
 
-    const modifyPost = (id, str) => {
-        const newPosts = posts.map(p => {
-            if (p.id === id) {
-                return {...p, description: str};
-            }
-            return p;
-        })
-        setPosts(newPosts);
-    }
+    // const modifyPost = (id, str) => {
+    //     const newPosts = posts.map(p => {
+    //         if (p.id === id) {
+    //             return {...p, body: str};
+    //         }
+    //         return p;
+    //     })
+    //     setPosts(newPosts);
+    // }
 
     const deletePost = (post) => {
       setPosts(posts.filter(p =>
@@ -47,23 +49,12 @@ function App() {
 
     const fetchPosts = async () => {
         const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-
-        const posts = [];
-
-        for (let obj of response.data) {
-            let post = {};
-            post.title = obj.title
-            post.description = obj.body
-            posts.push(post)
-        }
-
-        setPosts(posts);
+        setPosts(response.data);
     }
 
 
     return (
         <div className='App'>
-            <CreateButton onClick={fetchPosts}>Fetch</CreateButton>
             <CreateButton
                 style={{marginTop: 30}}
                 onClick={() => setModal(true)}
@@ -81,7 +72,9 @@ function App() {
                 filter={filter}
                 setFilter={setFilter}
             />
-                <PostList posts={sortedAndSearchedPosts} modify={modifyPost} remove={deletePost} title={'Posts list:'}/>
+                <PostList posts={sortedAndSearchedPosts}
+                          // modify={modifyPost}
+                          remove={deletePost} title={'Posts list:'}/>
         </div>
     );
 }

@@ -4,7 +4,7 @@ import CreateButton from "./UI/button/CreateButton";
 
 const PostForm = ({add, setModal}) => {
 
-    const [post, createPost] = useState({title: '', description: ''});
+    const [post, createPost] = useState({title: '', body: ''});
 
     const addNewPost = (event) => {
         event.preventDefault()
@@ -12,7 +12,7 @@ const PostForm = ({add, setModal}) => {
         const newPost = {...post, id: Date.now()}
         add(newPost);
 
-        createPost({title: '', description: ''})
+        createPost({title: '', body: ''})
     };
 
     return (
@@ -26,8 +26,8 @@ const PostForm = ({add, setModal}) => {
                 />
 
                 <MyInput
-                    value={post.description}
-                    onChange={e => createPost({...post, description: e.target.value})}
+                    value={post.body}
+                    onChange={e => createPost({...post, body: e.target.value})}
                     type='text'
                     placeholder='Description of post'
                 />
