@@ -13,6 +13,7 @@ import CreateModal from "./components/UI/CreateModal/CreateModal";
 import {TransitionGroup} from "react-transition-group";
 import {usePosts} from "./hooks/usePosts";
 import axios from "axios";
+import PostService from "./API/PostService";
 
 
 function App() {
@@ -48,8 +49,8 @@ function App() {
     }
 
     const fetchPosts = async () => {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-        setPosts(response.data);
+        const posts = await PostService.getAll();
+        setPosts(posts);
     }
 
 
