@@ -14,6 +14,7 @@ import {TransitionGroup} from "react-transition-group";
 import {usePosts} from "./hooks/usePosts";
 import axios from "axios";
 import PostService from "./API/PostService";
+import Loader from "./components/UI/Loader/Loader";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     const [posts, setPosts] = useState([]);
     const [filter, setFilter] = useState({sort: '', query: ''});
     const [modal, setModal] = useState(false);
+    const [isPostsLoading, setPostsLoading] = useState(false);
 
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
@@ -49,8 +51,13 @@ function App() {
     }
 
     const fetchPosts = async () => {
-        const posts = await PostService.getAll();
-        setPosts(posts);
+        setPostsLoading(true);
+        setTimeout(async () => {
+            const posts = await PostService.getAll();
+            setPosts(posts);
+            setPostsLoading(false);
+        }, 1000)
+
     }
 
 
@@ -73,9 +80,16 @@ function App() {
                 filter={filter}
                 setFilter={setFilter}
             />
-                <PostList posts={sortedAndSearchedPosts}
-                          // modify={modifyPost}
-                          remove={deletePost} title={'Posts list:'}/>
+            {
+                isPostsLoading
+                    ?<div style={{display: 'flex', justifyContent: 'center', marginTop: '70px'}}>
+                        <Loader />
+                    </div>
+                    :<PostList posts={sortedAndSearchedPosts}
+                        // modify={modifyPost}
+                               remove={deletePost} title={'Posts list:'}/>
+            }
+
         </div>
     );
 }
