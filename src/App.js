@@ -16,6 +16,8 @@ import axios from "axios";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/Loader/Loader";
 import {useFetch} from "./hooks/useFetch";
+import {getPagesArr, getPagesCount} from "./utils/pages";
+import Pagination from "./components/UI/Pagination/Pagination";
 
 
 function App() {
@@ -23,15 +25,23 @@ function App() {
     const [posts, setPosts] = useState([]);
     const [filter, setFilter] = useState({sort: '', query: ''});
     const [modal, setModal] = useState(false);
+    const [totalPages, setTotalPages] = useState(0);
+    const [limit, setLimit] = useState(10);
+    const [page, setPage] = useState(1);
+
     const [fetchPosts, isPostsLoading, isPostError] = useFetch(async () => {
-        const posts = await PostService.getAll();
-        setPosts(posts);
+        const response = await PostService.getAll(limit, page);
+        setPosts(response.data);
+        const totalPosts = response.headers['x-total-count'];
+        setTotalPages(getPagesCount(limit,totalPosts));
     });
+
+    let pagesArray = getPagesArr(totalPages);
 
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
 
-    useEffect(() => { fetchPosts() }, []);
+    useEffect(() => { fetchPosts() }, [page]);
 
     const addPost = (newPost) => {
         setPosts([...posts, newPost]);
@@ -86,6 +96,10 @@ function App() {
                         // modify={modifyPost}
                                remove={deletePost} title={'Posts list:'}/>
             }
+            <Pagination
+                pagesArray={pagesArray}
+                page={page}
+                setPage={setPage} />
 
         </div>
     );
