@@ -18,6 +18,7 @@ import Loader from "./components/UI/Loader/Loader";
 import {useFetch} from "./hooks/useFetch";
 import {getPagesArr, getPagesCount} from "./utils/pages";
 import Pagination from "./components/UI/Pagination/Pagination";
+import {usePagination} from "./hooks/usePagination";
 
 
 function App() {
@@ -33,15 +34,18 @@ function App() {
         const response = await PostService.getAll(limit, page);
         setPosts(response.data);
         const totalPosts = response.headers['x-total-count'];
-        setTotalPages(getPagesCount(limit,totalPosts));
+        setTotalPages(getPagesCount(limit, totalPosts));
     });
 
-    let pagesArray = getPagesArr(totalPages);
+    // let pagesArray = getPagesArr(totalPages);
+    let pagesArray = usePagination(totalPages, limit);
 
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
 
-    useEffect(() => { fetchPosts() }, [page]);
+    useEffect(() => {
+        fetchPosts()
+    }, [page]);
 
     const addPost = (newPost) => {
         setPosts([...posts, newPost]);
