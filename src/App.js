@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Posts from "./pages/Posts";
 import NavBar from "./components/UI/NavBar/NavBar";
 import ErrorPage from "./pages/ErrorPage";
+import AppRouter from "./components/AppRouter";
 
 
 function App() {
@@ -12,24 +13,7 @@ function App() {
     return (
         <BrowserRouter>
             <NavBar />
-            <Routes>
-                <Route
-                    path="/about"
-                    element={<About />}
-                />
-                <Route
-                    path="/posts"
-                    element={<Posts />}
-                />
-                <Route
-                    path="/error"
-                    element={<ErrorPage />}
-                />
-                <Route
-                    path="*"
-                    element={<Navigate to="/error" />}
-                />
-            </Routes>
+            <AppRouter />
         </BrowserRouter>
     );
 }
