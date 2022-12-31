@@ -3,7 +3,9 @@ import React from 'react';
 const About = () => {
     return (
         <h1>
-            That's a React app.
+            Hello!
+            <br />
+            This is post-sharing web-application made with React.js.
         </h1>
     );
 };
