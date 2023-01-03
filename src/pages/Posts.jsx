@@ -14,6 +14,7 @@ import {getPagesCount} from "../utils/pages";
 import Pagination from "../components/UI/Pagination/Pagination";
 import {usePagination} from "../hooks/usePagination";
 import {useObserver} from "../hooks/useObserver";
+import PostSortingSelector from "../components/UI/postSortingSelector/postSortingSelector";
 
 
 function Posts() {
@@ -45,7 +46,7 @@ function Posts() {
 
     useEffect(() => {
         fetchPosts()
-    }, [page]);
+    }, [page, limit]);
 
     const addPost = (newPost) => {
         setPosts([...posts, newPost]);
@@ -79,6 +80,17 @@ function Posts() {
                 filter={filter}
                 setFilter={setFilter}
             />
+            <PostSortingSelector
+            value={limit}
+            onChange={value => setLimit(value)}
+            defaultValue='Amount of posts on page'
+            options={[
+                {value: 5, name: '5'},
+                {value: 10, name: '10'},
+                {value: 25, name: '25'},
+                {value: -1, name: 'show all'}
+            ]}
+            />
             {
                 isPostError && <h1>
                     Error: ${isPostError}
@@ -88,7 +100,7 @@ function Posts() {
                 posts={sortedAndSearchedPosts}
                 remove={deletePost}
                 title={'Posts list:'}/>
-            <div ref={lastElement} style={{height: '20px', background: 'red'}}></div>
+            <div ref={lastElement} style={{height: '20px'}}></div>
             {
                 isPostsLoading &&
                 <div style={{display: 'flex', justifyContent: 'center', marginTop: '70px'}}>
