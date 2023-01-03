@@ -1,46 +1,30 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
-import About from "../pages/About";
-import Posts from "../pages/Posts";
-import ErrorPage from "../pages/ErrorPage";
-import PostIdPage from "../pages/PostIdPage";
-import {routes} from "../router";
+import {privateRoutes, publicRoutes,} from "../router";
+import {AuthContext} from "../context";
 
 const AppRouter = () => {
+
+    const {isAuth} = useContext(AuthContext)
+    console.log(isAuth)
+
     return (
-        <div>
-            <Routes>
-                {routes.map(route => <Route
-                    path={route.path}
-                    exact={route.exact}
-                    element={<route.element />}
-                    />)}
-                {/*<Route*/}
-                {/*    path="/about"*/}
-                {/*    element={<About />}*/}
-                {/*/>*/}
-                {/*<Route*/}
-                {/*    exact path="/posts"*/}
-                {/*    element={<Posts />}*/}
-                {/*/>*/}
-                {/*<Route*/}
-                {/*    path='/posts/:id'*/}
-                {/*    element={<PostIdPage />}*/}
-                {/*/>*/}
-                {/*<Route*/}
-                {/*    path="/error"*/}
-                {/*    element={<ErrorPage />}*/}
-                {/*/>*/}
-                {/*<Route*/}
-                {/*    path="/"*/}
-                {/*    element={<Navigate to="/about" />}*/}
-                {/*/>*/}
-                {/*<Route*/}
-                {/*    path="*"*/}
-                {/*    element={<Navigate to="/error" />}*/}
-                {/*/>*/}
+            isAuth
+            ? <Routes>
+            {privateRoutes.map(route => <Route
+                path={route.path}
+                exact={route.exact}
+                element={<route.element />}
+                />)}
             </Routes>
-        </div>
+
+            : <Routes>
+            {publicRoutes.map(route => <Route
+                path={route.path}
+                exact={route.exact}
+                element={<route.element />}
+            />)}
+             </Routes>
     );
 };
 
